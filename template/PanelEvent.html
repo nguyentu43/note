@@ -1,0 +1,10 @@
+<div class="panel-heading">
+	<div class="btn-group pull-right" role="group" aria-label="toolbar">
+		<button type="button" class="btn btn-default" ng-click="openEditEventModal(item)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+		<button type="button" class="btn btn-default" ng-click="removeEvent(item)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	</div>
+	<h5>{{title}} - Thời gian: {{time | date:'HH:mm'}}</h5>
+</div>
+<div class="panel-body">
+	{{content}}
+</div>

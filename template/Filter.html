@@ -1,0 +1,11 @@
+<div class="popover" tabindex="-1" style="color:black">
+  <div class="arrow"></div>
+  <h3 class="popover-title">Lọc sự kiện</h3>
+  <div class="popover-content">
+  	<label for="title">Tiêu đề: </label>
+	<input type="text" class="form-control" name="title" ng-model="filter.title" placeholder="Nhập tiêu đề sự kiện">
+	<div style="font-weight: 700; margin-top: 10px; margin-bottom: 5px">Màu: </div>
+	<div class="color" style="background-color:#ccc" ng-class="filter.type == ''? 'color-select':''" ng-click="filter.type=''"></div>
+	<div class="color" ng-class="addClassColor(item, filter)" ng-repeat="item in colorPicker" ng-click="selectColor(item, filter)"></div>
+  </div>
+</div>

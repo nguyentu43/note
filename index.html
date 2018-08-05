@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Note</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/angular-motion.min.css">
+	<link rel="icon" href="http://www.iconarchive.com/download/i79918/dtafalonso/ios7-desktop/Notes.ico">
+	<script src="js/libs/angular.min.js"></script>
+	<script src="js/libs/angular-animate.min.js"></script>
+	<script src="js/libs/angular-strap.min.js"></script>
+	<script src="js/libs/angular-strap.tpl.min.js"></script>
+	<script src="js/app.js"></script>
+	<style type="text/css">
+		.mycursor{
+			cursor: pointer;
+		}
+
+		.panel-event{
+			overflow-y: auto;
+			height: 500px;
+		}
+
+		.color{
+			width: 40px;
+			height: 40px;
+			margin-right: 20px;
+			display: inline-block;
+		}
+
+		.color-select{
+			border: 1px solid gray;
+		}
+
+		.animation.ng-enter{
+			transition: opacity 0.5s;
+			opacity: 0;
+		}
+
+		.animation.ng-enter-active{
+			opacity: 1;
+		}
+	</style>
+</head>
+<body ng-app="myApp" ng-controller="MainController">
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Note</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Bạn có <span class="badge">{{eventRecently}}</span> sự kiện trong ngày</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 calendar">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Lịch
+						<span class="pull-right mycursor" ng-click="today()">Hôm nay</span>
+						<div class="clearfix"></div>
+					</h3>
+				</div>
+				<div class="panel-body" ng-include="template">
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Sự kiện trong ngày {{ selectDateObj.date }}/{{ selectDateObj.month + 1 }}/{{ selectDateObj.year }}
+						<span class="glyphicon glyphicon-plus pull-right mycursor" aria-hidden="true" ng-click="openAddEventModal()"></span>
+						<span class="glyphicon glyphicon-filter pull-right mycursor" style="margin-right: 10px" aria-hidden="true" data-placement="bottom-right" data-template-url="template/Filter.html" data-container="body" data-trigger="click" bs-popover></span>
+						<div class="clearfix"></div>
+					</h3>
+				</div>
+				<div class="panel-body panel-event">
+					<h5 ng-if="!eventSelectDate">Bạn không có sự kiện nào trong ngày</h5>
+					<div class="panel animation" ng-repeat="item in eventSelectDate | filter: filter" ng-class="'panel-' + item.type">
+						<div class="panel-heading">
+							<div class="btn-group pull-right" role="group" aria-label="toolbar">
+								<button type="button" class="btn btn-default" ng-click="openEditEventModal(item)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+								<button type="button" class="btn btn-default" ng-click="removeEvent(item)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+							</div>
+							<h5>{{item.title}} - Thời gian: {{item.time | date:'HH:mm'}}</h5>
+						</div>
+						<div class="panel-body">
+							{{item.content}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/ng-template" id="tableMonth">
+		<h4 class="text-center">
+			<span class="glyphicon glyphicon-chevron-left mycursor" aria-hidden="true" ng-click="changeYear('left')"></span> Năm {{Year}} <span class="glyphicon glyphicon-chevron-right mycursor" aria-hidden="true" ng-click="changeYear('right')"></span>
+		</h4>
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+				</thead>
+				<tbody>
+					<tr ng-repeat="row in TableMonth" class="animation">
+						<td class="mycursor" ng-repeat="col in row" ng-click="setMonthOnTableMonth(col)">{{ col }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</script>
+	<script type="text/ng-template" id="tableDate">
+		<h4 class="text-center">
+			<span class="glyphicon glyphicon-chevron-left mycursor" aria-hidden="true" ng-click="changeMonth('left')"></span> <span class="mycursor" ng-click="changeTemplate('tableMonth')">Tháng {{ Month }}, Năm {{Year}}</span> <span class="glyphicon glyphicon-chevron-right mycursor" aria-hidden="true" ng-click="changeMonth('right')"></span>
+		</h4>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped text-center">
+				<thead>
+					<tr>
+						<th class="text-center">CN</th>
+						<th class="text-center">T2</th>
+						<th class="text-center">T3</th>
+						<th class="text-center">T4</th>
+						<th class="text-center">T5</th>
+						<th class="text-center">T6</th>
+						<th class="text-center">T7</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="row in TableDate" class="animation">
+						<td class="mycursor" ng-repeat="col in row" ng-class="MarkDate(col)" ng-click="selectDate(col)" data-placement="right" data-title="{{ titleTooltip(col) }}" data-trigger="hover" data-container="body" bs-tooltip>{{ col.date }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</script>
+</body>
+</html>
