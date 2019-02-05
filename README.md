@@ -1,2 +1,2 @@
-# Note
+# Demo Note
 AngularJS v1
